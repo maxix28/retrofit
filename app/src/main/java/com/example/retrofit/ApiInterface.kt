@@ -2,11 +2,7 @@ package com.example.retrofit
 
 import com.example.retrofit.models.user
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiInterface {
 @GET("/posts/1")
@@ -29,4 +25,18 @@ interface ApiInterface {
 
 
         ):Response<user>
+
+
+
+
+    @PUT("/posts/{id}")
+    suspend fun putPost(
+        @Path("id") id:Int,
+        @Body user:user
+    ):Response<user>
+    @PATCH("/posts/{id}")
+    suspend fun patchPost(
+        @Path("id") id:Int,
+        @Body user:user
+    ):Response<user>
 }

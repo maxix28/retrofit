@@ -2,7 +2,6 @@ package com.example.retrofit.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputFilter.LengthFilter
 import android.widget.Toast
 import com.example.retrofit.databinding.ActivityMainBinding
 import com.example.retrofit.models.UsersItem
@@ -26,7 +25,9 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        postRequest()
+       // postRequest()
+//putReUest()
+        patchReuest()
 
 
 
@@ -63,6 +64,76 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun patchReuest() {
+        GlobalScope.launch (Dispatchers.IO){
+            val response = try {
+
+                val user = user("new body",null,null,3)
+                // RetrofitInstance.api.createPost(user)
+                RetrofitInstance.api.patchPost(23,user)
+            } catch (e:HttpException){
+                Toast.makeText(applicationContext,"http error ${e.message}",Toast.LENGTH_SHORT).show()
+                return@launch
+
+            }catch (e:IOException){
+                Toast.makeText(applicationContext,"app error ${e.message}",Toast.LENGTH_SHORT).show()
+                return@launch
+
+            }
+
+
+            if(response.isSuccessful&& response.body()!=null){
+
+                Snackbar.make(binding.root,"${response.code( )}",Snackbar.LENGTH_SHORT).show()
+                withContext(Dispatchers.Main){
+                    binding.apply {
+                        id.text = response.body()!!.id.toString()
+                        titleUser.text = response.body()!!.title.toString()
+                        body.text = response.body()!!.body.toString()
+
+
+                    }
+                }
+            }
+
+        }
+    }
+
+    private fun putReUest() {
+        GlobalScope.launch (Dispatchers.IO){
+            val response = try {
+
+                 val user = user("new body",null,null,3)
+                // RetrofitInstance.api.createPost(user)
+                RetrofitInstance.api.putPost(1,user)
+            } catch (e:HttpException){
+                Toast.makeText(applicationContext,"http error ${e.message}",Toast.LENGTH_SHORT).show()
+                return@launch
+
+            }catch (e:IOException){
+                Toast.makeText(applicationContext,"app error ${e.message}",Toast.LENGTH_SHORT).show()
+                return@launch
+
+            }
+
+
+            if(response.isSuccessful&& response.body()!=null){
+
+                Snackbar.make(binding.root,"${response.code( )}",Snackbar.LENGTH_SHORT).show()
+                withContext(Dispatchers.Main){
+                    binding.apply {
+                        id.text = response.body()!!.id.toString()
+                        titleUser.text = response.body()!!.title.toString()
+                        body.text = response.body()!!.body.toString()
+
+
+                    }
+                }
+            }
+
+        }
+    }
+
     private fun postRequest() {
       GlobalScope.launch (Dispatchers.IO){
           val response = try {
@@ -83,7 +154,7 @@ class MainActivity : AppCompatActivity() {
 
           if(response.isSuccessful&& response.body()!=null){
 
-Snackbar.make(binding.root,"${response.code( )}",Snackbar.LENGTH_INDEFINITE).show()
+Snackbar.make(binding.root,"${response.code( )}",Snackbar.LENGTH_SHORT).show()
               withContext(Dispatchers.Main){
                   binding.apply {
                       id.text = response.body()!!.id.toString()
