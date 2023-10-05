@@ -1,8 +1,8 @@
 package com.example.retrofit.models
 
-data class user(
+data class UsersItem(
     val body: String,
-    val id: Int?,
+    val id: Int,
     val title: String,
     val userId: Int
 )
