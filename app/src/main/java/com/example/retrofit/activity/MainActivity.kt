@@ -27,8 +27,8 @@ class MainActivity : AppCompatActivity() {
 
        // postRequest()
 //putReUest()
-        patchReuest()
-
+        //patchReuest()
+deletePost()
 
 
 /*
@@ -62,6 +62,41 @@ class MainActivity : AppCompatActivity() {
 */
 
 
+    }
+
+    private fun deletePost() {
+        GlobalScope.launch (Dispatchers.IO){
+            val response = try {
+
+                //val user = user("new body",null,null,3)
+                // RetrofitInstance.api.createPost(user)
+                RetrofitInstance.api.deletePost(23)
+            } catch (e:HttpException){
+                Toast.makeText(applicationContext,"http error ${e.message}",Toast.LENGTH_SHORT).show()
+                return@launch
+
+            }catch (e:IOException){
+                Toast.makeText(applicationContext,"app error ${e.message}",Toast.LENGTH_SHORT).show()
+                return@launch
+
+            }
+
+
+            if(response.isSuccessful&& response.body()!=null){
+
+                Snackbar.make(binding.root,"${response.code( )}",Snackbar.LENGTH_SHORT).show()
+                withContext(Dispatchers.Main){
+                    binding.apply {
+                        id.text = response.body()!!.id.toString()
+                        titleUser.text = response.body()!!.title.toString()
+                        body.text = response.body()!!.body.toString()
+
+
+                    }
+                }
+            }
+
+        }
     }
 
     private fun patchReuest() {

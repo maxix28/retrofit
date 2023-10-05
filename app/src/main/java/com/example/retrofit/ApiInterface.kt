@@ -39,4 +39,11 @@ interface ApiInterface {
         @Path("id") id:Int,
         @Body user:user
     ):Response<user>
+
+
+
+    @DELETE("/posts/{id}")
+    suspend fun deletePost(
+        @Path("id") id:Int
+    ):Response<user>
 }
